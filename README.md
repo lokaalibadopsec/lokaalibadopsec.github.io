@@ -102,3 +102,111 @@ Seuraavat asiat ovat tavoitteita tai suunnitelmia, EI valmiiksi toteutettuja omi
 Pidämme tässä etusivussa yleiskuvan projektista. Kun jokin ratkaisu muuttuu, päivittelemme sen tilan tänne ja erottelemme aiemmat kokeilut nykyisestä kokoonpanosta. Yksityiskohtaisille ohjeille ja kuvalliselle dokumentaatiolle voidaan myöhemmin luoda omat sivut.
 
 Projektin tekijät: **Eetu Ala-Kortesniemi ja Jesse Korhonen** (`badopsec.local`).
+
+
+
+# TrueNAS NAS Project
+
+This repository documents our NAS server project. It began with a need to share files used in our studies and personal projects. Over time, it has grown into a learning environment where we practise storage solutions, service administration, remote access, monitoring, and the use of local AI.
+
+This documentation explains what we use the server for, what we have already built, and what is still in progress. We improve the setup as we test what works and learn more.
+
+## Contents
+
+- [Project goals](#project-goals)
+- [Current hardware](#current-hardware)
+- [How the project evolved](#how-the-project-evolved)
+- [Services and their status](#services-and-their-status)
+- [Local AI and RAG](#local-ai-and-rag)
+- [Remote access, monitoring, and security](#remote-access-monitoring-and-security)
+- [Next steps](#next-steps)
+- [Maintaining the documentation](#maintaining-the-documentation)
+
+## Project goals
+
+The NAS (Network Attached Storage) serves as a shared place to store and access files, as well as a platform for our own services. Our original goal was to set up an SMB network share for tools, software, scripts, and other project materials related to our studies. We also use the server to learn how to run, monitor, and maintain multiple applications in one environment.
+
+Our main learning goals are to:
+
+- set up and maintain a TrueNAS SCALE server;
+- manage file shares, applications, and their storage;
+- arrange remote access and monitor service availability;
+- run a local language model and develop ways to use it with our own material;
+- document changes, problems, and solutions so the environment is easier to understand and maintain later.
+
+This is a learning project, so the services and how we use them may change as we test things.
+
+## Current hardware
+
+According to the project documentation, the current setup is:
+
+| Component | Configuration |
+| --- | --- |
+| Motherboard | ASUS P8H61M PRO |
+| CPU | Intel Core i5-4690K |
+| RAM | 16 GB DDR3 |
+| GPU | ASUS Turbo GeForce GTX 1060, 6 GB |
+| Operating system | TrueNAS SCALE |
+
+The server was originally built around an old Fujitsu Esprimo desktop. We later upgraded the setup, including the case, power supply, and graphics card. The table shows the upgraded hardware.
+
+We added the GPU mainly to improve the performance of the local language model. In one simple test of our setup, response time dropped from about 33 seconds to about 2.4 seconds after enabling the GPU. These figures describe that particular test, not the server's performance in general.
+
+## How the project evolved
+
+1. **Shared files.** We first set up an SMB share on the TrueNAS server so our project files and tools could be accessed from one place.
+2. **Remote access.** We added Tailscale so we could access the server and its services from outside the local network through a controlled connection.
+3. **Monitoring and applications.** We added service availability monitoring and tried various self-hosted applications, including media and system monitoring tools.
+4. **Local AI.** We installed Ollama to run language models and connected it to the Odysseus web interface.
+5. **Hardware upgrade.** We upgraded the server and added a GTX 1060 to speed up AI-related tasks and processes.
+6. **Answers based on our own material.** We began experimenting with RAG and organising our material so the local AI could use our documentation.
+
+## Services and their status
+
+The statuses below are based on the project documentation used to prepare this README. **Running** means we have got the service up and running; it does not mean every feature is finished. **In progress** means we are still working on the service or how we plan to use it.
+
+| Service | Purpose | Documented status |
+| --- | --- | --- |
+| SMB file share | Shared files, tools, and project materials | Implemented |
+| Tailscale | Remote access to the server environment | Running |
+| Uptime Kuma | Service availability monitoring and alerts | Running |
+| Netdata | Server health and performance monitoring | Running |
+| Ollama | Running local language models | Running |
+| Odysseus | Web interface for the language model | Running |
+| Jellyfin | Managing and playing our media library | Setup in progress |
+| Filebrowser Quantum | Accessing files through a web browser | In progress |
+| Kerberos-agent | Camera monitoring experiment for the Opticam i5 project | In progress |
+
+We have tested Telegram notifications in Uptime Kuma to receive updates about the server's status. For Jellyfin, we are still defining the media library and access permissions. We only use content for which we have the necessary rights.
+
+## Local AI and RAG
+
+Our goal with local AI is to run a language model on the server and use it for learning and for the project itself. **Ollama** runs the model, while **Odysseus** provides a browser-based interface. Enabling the GPU made this setup more practical in our own tests.
+
+We are currently developing a **RAG setup** (Retrieval-Augmented Generation). With RAG, the system searches a separate collection of material for information relevant to a question and gives that information to the language model to support its answer. The aim is for the model to use our NAS project documentation and, later, other organised learning materials.
+
+Right now, we are focusing on collecting material, organising it by topic, and making sure the retrieved information actually affects the answers. Indexing the material alone does not prove that the answers are correct or that the model uses the sources consistently. This part of the project is still in development.
+
+## Remote access, monitoring, and security
+
+Remote access makes it easier to maintain the server, while monitoring helps us spot problems. We use Tailscale for remote access and Uptime Kuma and Netdata to track availability and system health. We continue to develop these services as our needs change.
+
+We use this environment for studying and practising system administration, so we pay attention to access permissions, service settings, and what information we publish. This public documentation describes the setup and what we have learned. Passwords, API keys, private addresses, and other sensitive settings do not belong in the repository.
+
+## Next steps
+
+The following are goals or plans, **not features we have already completed**:
+
+- **Improve the RAG material:** organise sources into clear topics and evaluate how well the model uses them in its answers.
+- **Finish setting up services:** continue working out the settings and intended use of applications such as Jellyfin and Filebrowser Quantum.
+- **Remote console:** investigate a KVM solution that would let us see and control the machine remotely even when the operating system's usual remote access is unavailable.
+- **Cyberdeck:** plan a portable device project; we will decide on the details later.
+- **More self-hosted services:** consider testing a communication service, depending on what the project and available hardware allow.
+- **Expand the documentation:** add more detailed descriptions of the hardware, service setup, changes, and problems we have solved.
+
+## Maintaining the documentation
+
+This front page gives an overview of the project. When something changes, we update its status here and distinguish earlier experiments from the current setup. We may create separate pages later for detailed instructions and documentation with images.
+
+Project members: **Eetu Ala-Kortesniemi and Jesse Korhonen** (`badopsec.local`).
+
